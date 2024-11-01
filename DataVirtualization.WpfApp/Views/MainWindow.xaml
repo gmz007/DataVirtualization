@@ -1,0 +1,102 @@
+﻿<Window x:Class="DataVirtualization.WpfApp.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:DataVirtualization.WpfApp.ViewModels"
+        d:DataContext="{d:DesignInstance vm:MainViewModel}"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="750" Width="1200">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <DockPanel 
+            Grid.Row="0"
+            Margin="8,8,8,4">
+            <TextBlock 
+                Text="Search:"
+                VerticalAlignment="Center" />
+            <Button
+                DockPanel.Dock="Right"
+                Margin="8,0,0,0"
+                Content="Refresh"
+                Command="{Binding RefreshCommand}"/>
+            <TextBox 
+                Margin="8,0,0,0"
+                VerticalAlignment="Center"
+                Text="{Binding SearchText, 
+                       UpdateSourceTrigger=PropertyChanged}">
+                <TextBox.InputBindings>
+                    <KeyBinding 
+                        Key="Enter" 
+                        Command="{Binding SearchUserCommand}" />
+                </TextBox.InputBindings>
+            </TextBox>
+        </DockPanel>
+
+        <StackPanel 
+            Grid.Row="1"
+            Orientation="Horizontal"
+            Margin="16,0,16,8">
+            <TextBlock>
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}Found {0:N0} records in {1}ms.">
+                        <Binding Path="Count" />
+                        <Binding Path="QueryTime" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+        </StackPanel>
+
+        <ListView
+            Grid.Row="2"
+            Margin="8,0,8,8"
+            ScrollViewer.VerticalScrollBarVisibility="Auto"
+            ItemsSource="{Binding Users, NotifyOnTargetUpdated=True}"
+            TargetUpdated="ListView_TargetUpdated">
+            <ListView.Resources>
+                <Style TargetType="{x:Type GridViewColumnHeader}">
+                    <Setter 
+                        Property="HorizontalContentAlignment" 
+                        Value="Left" />
+                    <Setter 
+                        Property="Padding" 
+                        Value="8,0" />
+                </Style>
+            </ListView.Resources>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn 
+                        Header="Id"
+                        Width="80"
+                        DisplayMemberBinding="{Binding Id, StringFormat={}{0:N0}}" />
+                    <GridViewColumn 
+                        Header="Name"
+                        Width="160"
+                        DisplayMemberBinding="{Binding Name}" />
+                    <GridViewColumn 
+                        Header="Email"
+                        Width="240"
+                        DisplayMemberBinding="{Binding Email}" />
+                    <GridViewColumn 
+                        Header="Status"
+                        Width="80"
+                        DisplayMemberBinding="{Binding Status}" />
+                    <GridViewColumn 
+                        Header="Subscription"
+                        Width="120"
+                        DisplayMemberBinding="{Binding SubscriptionType}" />
+                    <GridViewColumn 
+                        Header="Points"
+                        Width="80"
+                        DisplayMemberBinding="{Binding Points}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+    </Grid>
+</Window>

@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "DataVirtualization.WinUIApp (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "DataVirtualization.WinUIApp (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
